@@ -1,0 +1,87 @@
+parted -s /dev/sda mklabel msdos
+&&
+parted -s /dev/sda mkpart primary 2048s 100%
+&&
+cryptsetup --cipher aes-xts-plain64 --hash sha512 --use-random \
+                    --verify-passphrase luksFormat /dev/sda1
+&&
+cryptsetup open /dev/sda1 cryptroot
+&&
+mkfs -t btrfs -L linuxroot /dev/mapper/cryptroot
+&&
+mount -t btrfs -o compress=lzo /dev/mapper/cryptroot /mnt
+&&
+btrfs subvolume create /mnt/@
+&&
+btrfs subvolume create /mnt/@home
+&&
+btrfs subvolume create /mnt/@snapshots
+&&
+umount /mnt
+&&
+mount -o compress=lzo,subvol=@ /dev/mapper/cryptroot /mnt
+&&
+mkdir -p /mnt/home
+&&
+mount -o compress=lzo,subvol=@home /dev/mapper/cryptroot /mnt/home
+&&
+mkdir -p /mnt/.snapshots
+&&
+mount -o compress=lzo,subvol=@snapshots /dev/mapper/cryptroot /mnt/.snapshots
+&&
+pacstrap /mnt base base-devel btrfs-progs snapper zsh mlocate htop \
+                net-tools wireless_tools wpa_supplicant arch-wiki-lite \
+                intel-ucode grub vim aria2 hping elinks dialog
+&&
+genfstab -L -p /mnt >> /mnt/etc/fstab
+&&
+arch-chroot /mnt /bin/bash -c "rm /etc/localtime
+&&
+ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+&&
+hwclock --systohc --utc
+&&
+echo thinkbrauni > /etc/hostname
+&&
+echo en_US.UTF-8 >> /etc/locale.gen 
+&&
+echo en_GB.UTF-8 >> /etc/locale.gen
+&&
+echo de_DE.UTF-8 >> /etc/locale.gen
+&&
+locale-gen
+&&
+echo LANG=en_US.utf8 >> /etc/locale.conf
+&&
+echo LANGUAGE=en_US >> /etc/locale.conf
+&&
+echo LC_ALL=C >> /etc/locale.conf
+&&
+echo KEYMAP=de > /etc/vconsole.conf
+&&
+echo FONT=Lat2-Terminus16 >> /etc/vconsole.conf
+&&
+passwd
+&&
+nano /etc/mkinitcpio.conf
+# MODULES="i915"
+# BINARIES="/usr/sbin/btrfs"
+# HOOKS="base udev autodetect modconf block encrypt filesystems keyboard fsck"
+&&
+mkinitcpio -p linux
+&&
+echo GRUB_ENABLE_CRYPTODISK=y >> /etc/default/grub
+&&
+nano /etc/default/grub
+# GRUB_CMDLINE_LINUX="cryptdevice=/dev/sda1:cryptroot root=/dev/mapper/cryptroot rootflags=subvol=@"
+# GRUB_CMDLINE_LINUX="cryptdevice=/dev/sda1:cryptroot"
+&&
+grub-mkconfig -o /boot/grub/grub.cfg
+&&
+grub-install /dev/sda
+&&
+exit"
+&&
+umount -R /mnt
+&&
+reboot
