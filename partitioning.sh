@@ -38,7 +38,7 @@ umount /mnt
 
 echo "Mounting Subvols"
 mount -o subvol=@,ssd,compress=lzo,discard "$ROOT" /mnt
-mkdir /mnt/{home swap .snapshots boot}
+mkdir /mnt/{home,swap,.snapshots,boot}
 mkdir /mnt/home/.snapshots
 
 mount -o subvol=@home,ssd,compress=lzo,discard "$ROOT" /mnt/home
