@@ -24,6 +24,14 @@ echo "Formating Boot as fat32"
 wipefs -a "$BOOT"
 mkfs.vfat -F32 "$BOOT"
 
+echo "Encrypting ROOT"
+cryptsetup luksFormat "$ROOT"
+cryptsetup open "$ROOT"
+
+ROOT="/dev/mapper/archlinux"
+
+
+
 echo "Formating Root as btrfs"
 wipefs -a "$ROOT"
 mkfs.btrfs -L archlinux "$ROOT"
