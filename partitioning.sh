@@ -39,13 +39,12 @@ umount /mnt
 echo "Mounting @"
 mount -o subvol=@,ssd,compress=lzo,discard "$ROOT" /mnt
 mkdir /mnt/{home,swap,.snapshots,boot}
-echo "MKDIR /mnt/home/.snapshots"
-mkdir /mnt/home/.snapshots
 
 echo "Mounting Subvols"
 mount -o subvol=@home,ssd,compress=lzo,discard "$ROOT" /mnt/home
 mount -o subvol=@swap,ssd,compress=lzo,discard "$ROOT" /mnt/swap
 mount -o subvol=@snapshots,ssd,compress=lzo,discard "$ROOT" /mnt/.snapshots
+mkdir /mnt/home/.snapshots
 mount -o subvol=@homeshots,ssd,compress=lzo,discard "$ROOT" /mnt/home/.snapshots
 
 echo "Create SWAP"
