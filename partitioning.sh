@@ -9,20 +9,20 @@ echo "HDD $DRIVE"
 sleep 30
 echo "Formating"
 
-echo -e "n\n\n\n512M\nef00\nn\n\n\n\n\nw\ny" | gdisk /dev/"$DRIVE" &> /dev/null
+echo -e "n\n\n\n512M\nef00\nn\n\n\n\n\nw\ny" | gdisk "$DRIVE" &> /dev/null
 
 BOOT="${DRIVE}1"
 ROOT="${DRIVE}2"
 
 echo "Formating Boot as fat32"
-sgdisk --zap-all /dev/"$BOOT"
-wipefs -a /dev/"$BOOT"
-mkfs.vfat -F32 /dev/"$BOOT")
+sgdisk --zap-all "$BOOT"
+wipefs -a "$BOOT"
+mkfs.vfat -F32 "$BOOT")
 
 echo "Formating Root as btrfs"
-mkfs.btrfs -L archlinux /dev/"$ROOT"
-sgdisk --zap-all /dev/"$ROOT"
-wipefs -a /dev/"$ROOT")
+mkfs.btrfs -L archlinux "$ROOT"
+sgdisk --zap-all "$ROOT"
+wipefs -a "$ROOT")
 
 echo "Create Subvols"
 mount -t btrfs -o compress=lzo "$ROOT" /mnt
@@ -53,6 +53,6 @@ mkswap /mnt/swap/swapfile
 swapon /mnt/swap/swapfile
 
 echo "Mount boot"
-mount /dev/sda1 /mnt/boot
+mount "$BOOT" /mnt/boot
 
 genfstab -L -p /mnt >> /mnt/etc/fstab
