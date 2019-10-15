@@ -12,7 +12,9 @@ echo "HDD $DRIVE"
 sleep 30
 echo "Formating"
 
-umount -l /mnt
+if (mount | grep /mnt); then
+    umount -l /mnt
+fi
 sgdisk --zap-all "$DRIVE"
 
 echo -e "n\n\n\n512M\nef00\nn\n\n\n\n\nw\ny" | gdisk "$DRIVE" &> /dev/null
@@ -24,7 +26,7 @@ echo "Formating Boot as fat32"
 wipefs -a "$BOOT"
 mkfs.vfat -F32 "$BOOT"
 
-echo "Encrypting ROOT"
+echo "Encrypting ROOT"  
 cryptsetup luksFormat "$ROOT"
 cryptsetup open "$ROOT"
 
