@@ -9,19 +9,19 @@ echo "HDD $DRIVE"
 sleep 30
 echo "Formating"
 
+sgdisk --zap-all "$DRIVE"
+
 echo -e "n\n\n\n512M\nef00\nn\n\n\n\n\nw\ny" | gdisk "$DRIVE" &> /dev/null
 
 BOOT="${DRIVE}1"
 ROOT="${DRIVE}2"
 
 echo "Formating Boot as fat32"
-sgdisk --zap-all "$BOOT"
 wipefs -a "$BOOT"
 mkfs.vfat -F32 "$BOOT"
 
 echo "Formating Root as btrfs"
 mkfs.btrfs -L archlinux "$ROOT"
-sgdisk --zap-all "$ROOT"
 wipefs -a "$ROOT"
 
 echo "Create Subvols"
