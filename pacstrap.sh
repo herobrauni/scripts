@@ -11,7 +11,7 @@ ansible efibootmgr
 genfstab -L -p /mnt >> /mnt/etc/fstab
 
 echo "KEYMAP=de" > /mnt/etc/vconsole.conf
-echo "en_US.UTF-8" >> /mnt//etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /mnt//etc/locale.gen
 echo FONT=Lat2-Terminus16 >> /mnt/etc/vconsole.conf
 
 arch-chroot /mnt /bin/bash locale-gen
