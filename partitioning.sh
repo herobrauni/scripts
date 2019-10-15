@@ -28,7 +28,7 @@ mkfs.vfat -F32 "$BOOT"
 
 echo "Encrypting ROOT"  
 cryptsetup luksFormat "$ROOT"
-cryptsetup open "$ROOT"
+cryptsetup open "$ROOT" archlinux
 
 ROOT="/dev/mapper/archlinux"
 
