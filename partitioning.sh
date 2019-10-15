@@ -17,12 +17,12 @@ ROOT="${DRIVE}2"
 echo "Formating Boot as fat32"
 sgdisk --zap-all "$BOOT"
 wipefs -a "$BOOT"
-mkfs.vfat -F32 "$BOOT")
+mkfs.vfat -F32 "$BOOT"
 
 echo "Formating Root as btrfs"
 mkfs.btrfs -L archlinux "$ROOT"
 sgdisk --zap-all "$ROOT"
-wipefs -a "$ROOT")
+wipefs -a "$ROOT"
 
 echo "Create Subvols"
 mount -t btrfs -o compress=lzo "$ROOT" /mnt
