@@ -31,3 +31,5 @@ cp ./mkinitcpio.conf /mnt/etc/mkinitcpio.conf
 
 arch-chroot /mnt grub-install --efi-directory=/boot --target=x86_64-efi --bootloader-id=boot
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+
+arch-chroot /mnt mkinitcpio -P
