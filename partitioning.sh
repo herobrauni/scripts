@@ -6,11 +6,13 @@
 set -e
 
 DRIVE=$1
+SWAPSIZE=$2
 
 echo "HDD $DRIVE"
 sleep 30
 echo "Formating"
 
+umount -l /mnt
 sgdisk --zap-all "$DRIVE"
 
 echo -e "n\n\n\n512M\nef00\nn\n\n\n\n\nw\ny" | gdisk "$DRIVE" &> /dev/null
@@ -50,7 +52,7 @@ mount -o subvol=@homeshots,ssd,compress=lzo,discard "$ROOT" /mnt/home/.snapshots
 echo "Create SWAP"
 truncate -s 0 /mnt/swap/swapfile
 chattr +C /mnt/swap/swapfile
-dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=8192 status=progress
+dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count="$SWAPSIZE" status=progress
 chmod 600 /mnt/swap/swapfile
 mkswap /mnt/swap/swapfile
 swapon /mnt/swap/swapfile
