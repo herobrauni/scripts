@@ -19,4 +19,4 @@ UUID=$(cryptsetup status /dev/mapper/archlinux | grep device)
 UUID=$(echo ${UUID:9})
 UUID=$(cryptsetup luksUUID "$UUID")
 
-echo "GRUB_CMDLINE_LINUX=cryptdevice=UUID=$UUID:archlinux:allow-discards"
+echo "GRUB_CMDLINE_LINUX=cryptdevice=UUID=$UUID:archlinux:allow-discards" >> /mnt/etc/default/grub
