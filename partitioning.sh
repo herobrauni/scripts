@@ -60,4 +60,4 @@ swapon /mnt/swap/swapfile
 echo "Mount boot"
 mount "$BOOT" /mnt/boot
 
-genfstab -L -p /mnt >> /mnt/etc/fstab
+echo "DONE!"
