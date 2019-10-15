@@ -9,7 +9,6 @@ DRIVE=$1
 SWAPSIZE=$2
 
 echo "HDD $DRIVE"
-sleep 30
 echo "Formating"
 
 if (mount | grep /mnt); then
