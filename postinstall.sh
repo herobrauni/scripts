@@ -1,14 +1,18 @@
 #!/usr/bin/env bash
 
-
 set -e
 
-pacstrap /mnt base base-devel linux btrfs-progs snapper \
-zsh mlocate htop net-tools wireless_tools wpa_supplicant \
-dialog nano sudo intel-ucode grub bash-completion git \
-ansible efibootmgr yay neofetch zsh-completions
+sh pacstrap.sh
 
-genfstab -L -p /mnt > /mnt/etc/fstab
+genfstab -L -p /mnt >> /mnt/etc/fstab
+
+echo "KEYMAP=de" > /mnt/etc/vconsole.conf
+echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+echo FONT=Lat2-Terminus16 >> /mnt/etc/vconsole.conf
+
+arch-chroot /mnt /bin/bash locale-gen
+echo LANGUAGE=en_US >> /mnt/etc/locale.conf
+echo LC_ALL=C >> /mnt/etc/locale.conf
 
 cp ./grub.conf /mnt/etc/default/grub
 
@@ -24,3 +28,7 @@ arch-chroot /mnt grub-install --efi-directory=/boot --target=x86_64-efi --bootlo
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 arch-chroot /mnt mkinitcpio -P
+
+arch-chroot useradd -mG wheel brauni
+
+echo "done!"
