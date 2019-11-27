@@ -1,3 +1,13 @@
+From 1a723fd375a530781d344a1315c55467ae9dbb1f Mon Sep 17 00:00:00 2001
+From: Geoffrey McRae <geoff@hostfission.com>
+Date: Wed, 27 Nov 2019 00:32:23 +1100
+Subject: [PATCH] quirk: AMD Navi 10 series vendor specific reset (v2)
+
+Signed-off-by: Geoffrey McRae <geoff@hostfission.com>
+---
+ drivers/pci/quirks.c | 132 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
+
 diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
 index 44c4ae1abd00..a3325beff5a6 100644
 --- a/drivers/pci/quirks.c
@@ -147,3 +157,7 @@ index 44c4ae1abd00..a3325beff5a6 100644
 +	{ PCI_VENDOR_ID_ATI, 0x731f, reset_amd_navi10 },
  	{ 0 }
  };
+ 
+-- 
+2.20.1
+
