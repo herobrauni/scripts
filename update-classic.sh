@@ -46,7 +46,7 @@ echo "MAKE COMPLETE - SWITCH TO SUDO"
 
 read -p "Press enter to continue"
 
-sudo make modules_install
+sudo make -j$CORES modules_install
 
 echo "MODULES DONE - COPY MKINITCPIO GRUB"
 
