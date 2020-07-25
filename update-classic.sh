@@ -20,7 +20,7 @@ wget "https://git.archlinux.org/svntogit/packages.git/plain/trunk/config?h=packa
 wget https://raw.githubusercontent.com/herobrauni/scripts/master/vars.patch
 wget https://raw.githubusercontent.com/herobrauni/scripts/master/quirks.patch
 # wget https://raw.githubusercontent.com/herobrauni/scripts/master/pci.patch
-wget https://raw.githubusercontent.com/herobrauni/scripts/master/dcn20_hwseq.patch
+# wget https://raw.githubusercontent.com/herobrauni/scripts/master/dcn20_hwseq.patch
 
 echo "DOWNLOADS DONE"
 
@@ -55,5 +55,7 @@ read -p "Press enter to continue"
 sudo cp -v arch/x86_64/boot/bzImage /boot/vmlinuz-linux-custom
 sudo mkinitcpio -P
 sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+yay -S nvidia-dkms corefreq-git
 
 echo "DONE"
