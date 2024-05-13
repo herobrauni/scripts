@@ -59,11 +59,7 @@ mkdir /mnt/home/.snapshots
 mount -o subvol=@homeshots,ssd,compress=lzo,discard "$ROOT" /mnt/home/.snapshots
 
 echo "Create SWAP"
-truncate -s 0 /mnt/swap/swapfile
-chattr +C /mnt/swap/swapfile
-dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count="$SWAPSIZE" status=progress
-chmod 600 /mnt/swap/swapfile
-mkswap /mnt/swap/swapfile
+btrfs filesystem mkswapfile --size "$SWAPSIZE" /mnt/swap/swapfile
 swapon /mnt/swap/swapfile
 
 echo "Mount boot"
