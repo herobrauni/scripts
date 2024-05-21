@@ -704,7 +704,7 @@ d-i preseed/late_command string	\
 apt-install wget curl git; \
 sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
-sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config; \
+sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
 in-target mkdir -p /home/debian/.ssh; \
 in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
