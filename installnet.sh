@@ -654,7 +654,7 @@ d-i passwd/root-login boolean false
 d-i passwd/make-user boolean true
 d-i passwd/user-fullname string Debian User
 d-i passwd/username string debian
-d-i passwd/user-password-crypted password $6$rounds=10000000$3MwsEJtY$rTi5kqiX4NQ4wzFv0m5vU6QGpDI9vh5f2hLypcp0vo4RgrJSBqIWtx0s2hk/Ta1zdfODrLMZfU8QZvPxZbCGB0
+d-i passwd/user-password-crypted password $myPASSWORD
 d-i passwd/user-uid string 1000
 
 d-i clock-setup/utc boolean true
@@ -705,7 +705,7 @@ sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication yes/g' /target/etc/ssh/sshd_config; \
 in-target mkdir -p /home/debian/.ssh; \
-in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
+in-target /bin/sh -c "echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBPFkI1tmXLQ5awKEqqoEUMbCalSqARtODdy8nQ18pKk Desktop' >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
 in-target /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"; \
