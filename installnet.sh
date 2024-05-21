@@ -707,7 +707,7 @@ sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/
 in-target mkdir -p /home/debian/.ssh; \
 in-target /bin/sh -c "echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBPFkI1tmXLQ5awKEqqoEUMbCalSqARtODdy8nQ18pKk Desktop' >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
-in-target /bin/sh -c "echo ${hostnamevar} > /etc/hostname"; \
+in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
