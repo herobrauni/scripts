@@ -654,7 +654,7 @@ d-i passwd/root-login boolean false
 d-i passwd/make-user boolean true
 d-i passwd/user-fullname string Debian User
 d-i passwd/username string debian
-d-i passwd/user-password-crypted password $1$4BJZaD0A$y1QykUnJ6mXprENfwpseH0
+d-i passwd/user-password-crypted password $6$rounds=10000000$3MwsEJtY$rTi5kqiX4NQ4wzFv0m5vU6QGpDI9vh5f2hLypcp0vo4RgrJSBqIWtx0s2hk/Ta1zdfODrLMZfU8QZvPxZbCGB0
 d-i passwd/user-uid string 1000
 
 d-i clock-setup/utc boolean true
@@ -708,6 +708,8 @@ in-target mkdir -p /home/debian/.ssh; \
 in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
+in-target /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"; \
+in-target /bin/sh -c "echo '127.0.1.1       ${hostnamevar}  ${hostnamevar}' >> /etc/hosts"; \
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
