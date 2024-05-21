@@ -705,7 +705,7 @@ sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
 in-target mkdir -p /home/debian/.ssh; \
-in-target /bin/sh -c "echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBPFkI1tmXLQ5awKEqqoEUMbCalSqARtODdy8nQ18pKk Desktop' >> /home/debian/.ssh/authorized_keys"; \
+in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
 in-target chown -R debian /home/debian/.ssh/; \
