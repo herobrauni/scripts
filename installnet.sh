@@ -650,11 +650,11 @@ d-i passwd/root-password-crypted password $1$4BJZaD0A$y1QykUnJ6mXprENfwpseH0
 d-i passwd/make-user boolean true
 d-i passwd/user-fullname string Debian User
 d-i passwd/username string debian
-d-i passwd/user-password-crypted $1$4BJZaD0A$y1QykUnJ6mXprENfwpseH0
+d-i passwd/user-password-crypted password $1$4BJZaD0A$y1QykUnJ6mXprENfwpseH0
 d-i passwd/user-uid string 1000
 
 d-i clock-setup/utc boolean true
-d-i time/zone string US/Eastern
+d-i time/zone string Europe/Paris
 d-i clock-setup/ntp boolean false
 
 d-i preseed/early_command string anna-install libfuse2-udeb fuse-udeb ntfs-3g-udeb libcrypto1.1-udeb libpcre2-8-0-udeb libssl1.1-udeb libuuid1-udeb zlib1g-udeb wget-udeb
