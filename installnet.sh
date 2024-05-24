@@ -157,10 +157,6 @@ while [[ $# -ge 1 ]]; do
 
 [[ "$EUID" -ne '0' ]] && echo "Error:This script must be run as root!" && exit 1;
 
-hostnamevar=$(cat /etc/hostname)
-resolvedvar=$(cat /etc/resolv.conf)
-hostsvar=$(cat /etc/hosts)
-
 function dependence(){
   Full='0';
   for BIN_DEP in `echo "$1" |sed 's/,/\n/g'`
@@ -615,6 +611,10 @@ for COMP in `echo -en 'gzip\nlzma\nxz'`
 
 $UNCOMP < /tmp/$NewIMG | cpio --extract --verbose --make-directories --no-absolute-filenames >>/dev/null 2>&1
 
+hostnamevar=$(</etc/hostname)
+resolvedvar=$(</etc/resolv.conf)
+hostsvar=$(</etc/hosts)
+
 if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
 CurrentKernelVersion=`ls -1 ./lib/modules 2>/dev/null |head -n1`
 [ -n "$CurrentKernelVersion" ] && SelectLowmem="di-utils-exit-installer,driver-injection-disk-detect,fdisk-udeb,netcfg-static,parted-udeb,partman-auto,partman-ext3,ata-modules-${CurrentKernelVersion}-di,efi-modules-${CurrentKernelVersion}-di,sata-modules-${CurrentKernelVersion}-di,scsi-modules-${CurrentKernelVersion}-di,scsi-nic-modules-${CurrentKernelVersion}-di" || SelectLowmem=""
@@ -704,12 +704,12 @@ apt-install wget curl git; \
 sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
-in-target mkdir -p /home/debian/.ssh; \
-in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
 in-target /bin/sh -c "echo '${hostsvar}' > /etc/hosts"; \
 in-target /bin/sh -c "echo '${resolvedvar}' > /etc/resolv.conf"; \
+in-target mkdir -p /home/debian/.ssh; \
+in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
