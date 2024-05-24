@@ -53,11 +53,6 @@ while [[ $# -ge 1 ]]; do
       tmpDIST="$1"
       shift
       ;;
-    -h|--hostname)
-      shift
-      hostnamevar="$1"
-      shift
-      ;;
     -u|--ubuntu)
       shift
       Relese='Ubuntu'
@@ -161,6 +156,8 @@ while [[ $# -ge 1 ]]; do
   done
 
 [[ "$EUID" -ne '0' ]] && echo "Error:This script must be run as root!" && exit 1;
+
+hostnamevar=$(cat /etc/hostname)
 
 function dependence(){
   Full='0';
@@ -799,6 +796,9 @@ EOF
 [[ "$UNKNOWHW" == '1' ]] && sed -i 's/^unsupported_hardware/#unsupported_hardware/g' /tmp/boot/ks.cfg
 [[ "$(echo "$DIST" |grep -o '^[0-9]\{1\}')" == '5' ]] && sed -i '0,/^%end/s//#%end/' /tmp/boot/ks.cfg
 fi
+
+cp /etc/resolv.conf resolv.conf
+cp /etc/hosts hosts
 
 find . | cpio -H newc --create --verbose | gzip -9 > /tmp/initrd.img;
 
