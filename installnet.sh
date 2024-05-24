@@ -711,6 +711,13 @@ in-target /bin/sh -c "echo '127.0.1.1       ${hostnamevar}  ${hostnamevar}' >> /
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
+in-target /bin/sh -c "cp /boot/etc/resolv.conf /home/debian/1_resolv.conf"; \
+in-target /bin/sh -c "cp /tmp/boot/etc/resolv.conf /home/debian/2_resolv.conf"; \
+in-target /bin/sh -c "cp /tmp/resolv.conf /home/debian/3_resolv.conf"; \
+in-target /bin/sh -c "cp /tmp/etc/resolv.conf /home/debian/4_resolv.conf"; \
+in-target /bin/sh -c "mkdir -p /mnt/cdrom"; \
+in-target /bin/sh -c "mount /dev/cdrom /mnt/cdrom"; \
+in-target /bin/sh -c "cp /mnt/cdrom/etc/resolv.conf /home/debian/4_resolv.conf"; \
 echo '@reboot root cat /etc/run.sh 2>/dev/null |base64 -d >/tmp/run.sh; rm -rf /etc/run.sh; sed -i /^@reboot/d /etc/crontab; bash /tmp/run.sh' >>/target/etc/crontab; \
 echo '' >>/target/etc/crontab; \
 echo '${setCMD}' >/target/etc/run.sh;
