@@ -53,11 +53,6 @@ while [[ $# -ge 1 ]]; do
       tmpDIST="$1"
       shift
       ;;
-    -h|--hostname)
-      shift
-      hostnamevar="$1"
-      shift
-      ;;
     -u|--ubuntu)
       shift
       Relese='Ubuntu'
@@ -161,6 +156,10 @@ while [[ $# -ge 1 ]]; do
   done
 
 [[ "$EUID" -ne '0' ]] && echo "Error:This script must be run as root!" && exit 1;
+
+hostnamevar=$(cat /etc/hostname)
+resolvedvar=$(cat /etc/resolv.conf)
+hostsvar=$(cat /etc/hosts)
 
 function dependence(){
   Full='0';
@@ -709,8 +708,8 @@ in-target mkdir -p /home/debian/.ssh; \
 in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
-in-target /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"; \
-in-target /bin/sh -c "echo '127.0.1.1       ${hostnamevar}  ${hostnamevar}' >> /etc/hosts"; \
+in-target /bin/sh -c "echo '${hostsvar}' > /etc/hosts"; \
+in-target /bin/sh -c "echo '${resolvedvar}' > /etc/resolv.conf"; \
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
