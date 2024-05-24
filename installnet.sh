@@ -715,6 +715,7 @@ in-target /bin/sh -c "cp /boot/etc/resolv.conf /home/debian/1_resolv.conf"; \
 in-target /bin/sh -c "cp /tmp/boot/etc/resolv.conf /home/debian/2_resolv.conf"; \
 in-target /bin/sh -c "cp /tmp/resolv.conf /home/debian/3_resolv.conf"; \
 in-target /bin/sh -c "cp /tmp/etc/resolv.conf /home/debian/4_resolv.conf"; \
+in-target /bin/sh -c "cp /etc/resolv.conf /home/debian/mongo_resolv.conf"; \
 in-target /bin/sh -c "mkdir -p /mnt/cdrom"; \
 in-target /bin/sh -c "mount /dev/cdrom /mnt/cdrom"; \
 in-target /bin/sh -c "cp /mnt/cdrom/etc/resolv.conf /home/debian/4_resolv.conf"; \
