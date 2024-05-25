@@ -691,7 +691,7 @@ d-i pkgsel/upgrade select none
 d-i apt-setup/services-select multiselect
 
 popularity-contest popularity-contest/participate boolean false
-
+ls /cdrom
 
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/bootdev string $IncDisk
