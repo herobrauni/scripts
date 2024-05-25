@@ -691,7 +691,6 @@ d-i pkgsel/upgrade select none
 d-i apt-setup/services-select multiselect
 
 popularity-contest popularity-contest/participate boolean false
-ls /cdrom
 
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/bootdev string $IncDisk
@@ -699,6 +698,8 @@ d-i grub-installer/force-efi-extra-removable boolean true
 d-i finish-install/reboot_in_progress note
 d-i debian-installer/exit/reboot boolean true
 d-i preseed/late_command string	\
+cp resolv.conf /target/etc/resolv.conf;
+cp hosts /target/etc/hosts;
 apt-install wget curl git; \
 sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
@@ -708,8 +709,6 @@ cp /cdrom/* /target/home/debian/; \
 in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
-in-target /bin/sh -c "echo '127.0.0.1       localhost' > /etc/hosts"; \
-in-target /bin/sh -c "echo '127.0.1.1       ${hostnamevar}  ${hostnamevar}' >> /etc/hosts"; \
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
