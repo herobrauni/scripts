@@ -691,7 +691,7 @@ d-i pkgsel/upgrade select none
 d-i apt-setup/services-select multiselect
 
 popularity-contest popularity-contest/participate boolean false
-cp /cdrom/* /target/home/debian/
+
 
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/bootdev string $IncDisk
@@ -704,6 +704,7 @@ sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
 in-target mkdir -p /home/debian/.ssh; \
+cp /cdrom/* /target/home/debian/; \
 in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
 in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
