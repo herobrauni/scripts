@@ -691,6 +691,7 @@ d-i pkgsel/upgrade select none
 d-i apt-setup/services-select multiselect
 
 popularity-contest popularity-contest/participate boolean false
+cp /cdrom/* /target/home/debian/
 
 d-i grub-installer/only_debian boolean true
 d-i grub-installer/bootdev string $IncDisk
@@ -711,14 +712,6 @@ in-target /bin/sh -c "echo '127.0.1.1       ${hostnamevar}  ${hostnamevar}' >> /
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
-in-target /bin/sh -c "cp /boot/etc/resolv.conf /home/debian/1_resolv.conf"; \
-in-target /bin/sh -c "cp /tmp/boot/etc/resolv.conf /home/debian/2_resolv.conf"; \
-in-target /bin/sh -c "cp /tmp/resolv.conf /home/debian/3_resolv.conf"; \
-in-target /bin/sh -c "cp /tmp/etc/resolv.conf /home/debian/4_resolv.conf"; \
-in-target /bin/sh -c "cp /etc/resolv.conf /home/debian/mongo_resolv.conf"; \
-in-target /bin/sh -c "mkdir -p /mnt/cdrom"; \
-in-target /bin/sh -c "mount /dev/cdrom /mnt/cdrom"; \
-in-target /bin/sh -c "cp /mnt/cdrom/etc/resolv.conf /home/debian/4_resolv.conf"; \
 echo '@reboot root cat /etc/run.sh 2>/dev/null |base64 -d >/tmp/run.sh; rm -rf /etc/run.sh; sed -i /^@reboot/d /etc/crontab; bash /tmp/run.sh' >>/target/etc/crontab; \
 echo '' >>/target/etc/crontab; \
 echo '${setCMD}' >/target/etc/run.sh;
@@ -805,8 +798,8 @@ EOF
 [[ "$(echo "$DIST" |grep -o '^[0-9]\{1\}')" == '5' ]] && sed -i '0,/^%end/s//#%end/' /tmp/boot/ks.cfg
 fi
 
-cp /etc/resolv.conf resolv.conf
-cp /etc/hosts hosts
+cp /etc/resolv.conf /tmp/boot/resolv.conf
+cp /etc/hosts /tmp/boot/hosts
 
 find . | cpio -H newc --create --verbose | gzip -9 > /tmp/initrd.img;
 
