@@ -703,8 +703,6 @@ in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
 in-target chown -R debian /home/debian/.ssh/; \
 in-target chmod 644 /home/debian/.ssh/authorized_keys; \
 in-target chmod 700 /home/debian/.ssh/; \
-in-target mkdir -p /run/systemd/resolve; \
-cp /saved/resolv.conf /target/run/systemd/resolve/stub-resolv.conf; \
 cp /saved/hosts /target/etc/hosts; \
 echo '@reboot root cat /etc/run.sh 2>/dev/null |base64 -d >/tmp/run.sh; rm -rf /etc/run.sh; sed -i /^@reboot/d /etc/crontab; bash /tmp/run.sh' >>/target/etc/crontab; \
 echo '' >>/target/etc/crontab; \
@@ -793,7 +791,6 @@ EOF
 fi
 
 mkdir /tmp/boot/saved
-cp /etc/resolv.conf /tmp/boot/saved/resolv.conf
 cp /etc/hosts /tmp/boot/saved/hosts
 
 find . | cpio -H newc --create --verbose | gzip -9 > /tmp/initrd.img;
