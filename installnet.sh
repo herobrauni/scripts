@@ -629,15 +629,8 @@ d-i anna/choose_modules_lowmem multiselect $SelectLowmem
 
 d-i netcfg/choose_interface select $interfaceSelect
 
-d-i netcfg/disable_autoconfig boolean true
+d-i netcfg/disable_autoconfig boolean false
 d-i netcfg/dhcp_failed note
-d-i netcfg/dhcp_options select Configure network manually
-d-i netcfg/get_ipaddress string $IPv4
-d-i netcfg/get_netmask string $MASK
-d-i netcfg/get_gateway string $GATE
-d-i netcfg/get_nameservers string $ipDNS
-d-i netcfg/no_default_route boolean true
-d-i netcfg/confirm_static boolean true
 
 d-i hw-detect/load_firmware boolean true
 
