@@ -802,7 +802,7 @@ if [[ "$loaderMode" == "0" ]]; then
   chown root:root $GRUBDIR/$GRUBFILE
   chmod 444 $GRUBDIR/$GRUBFILE
 
-  sleep 3 # && reboot || sudo reboot >/dev/null 2>&1
+  sleep 3 && reboot || sudo reboot >/dev/null 2>&1
 else
   rm -rf "$HOME/loader"
   mkdir -p "$HOME/loader"
