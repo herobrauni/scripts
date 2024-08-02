@@ -7,7 +7,7 @@
         name:
           - systemd-boot-manager
         state: absent
-    - name: install cosmos desktop
+    - name: install cosmic desktop
       community.general.pacman:
         name:
           - cosmic-applets-git
@@ -23,10 +23,7 @@
           - cosmic-session-git
           - cosmic-settings-git
           - cosmic-term-git
-          - cosmic-tweaks-git
           - cosmic-wallpapers-git
         state: present
         executable: paru
         update_cache: true
-
-
