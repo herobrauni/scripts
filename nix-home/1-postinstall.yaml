@@ -1,0 +1,64 @@
+- name: install and enable crowdsec
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: remove systemd-boot-manager
+      community.general.pacman:
+        name:
+          - systemd-boot-manager
+        state: absent
+    - name: install cosmos desktop
+      community.general.pacman:
+        name:
+          - cosmic-applets-git
+          - cosmic-applibrary-git
+          - cosmic-bg-git
+          - cosmic-comp-git
+          - cosmic-edit-git
+          - cosmic-files-git
+          - cosmic-icons-git
+          - cosmic-launcher-git
+          - cosmic-notifications-git
+          - cosmic-osd-git
+          - cosmic-session-git
+          - cosmic-settings-git
+          - cosmic-term-git
+          - cosmic-wallpapers-git
+          - networkmanager
+        state: present
+        executable: paru
+        update_cache: true
+    - name: change greetd settings to launch cosmic-greeter
+      ansible.builtin.lineinfile:
+        path: /etc/greetd/config.toml
+        regexp: '^command ='
+        line: 'command = "systemd-cat -t cosmic-greeter /usr/bin/cosmic-comp /usr/bin/cosmic-greeter"'
+    - name: change greetd settings to user cosmic-greeter
+      ansible.builtin.lineinfile:
+        path: /etc/greetd/config.toml
+        regexp: '^user ='
+        line: 'user = cosmic-greeter'
+    - name: copy cosmic-greeter
+      ansible.builtin.copy:
+        src: ./cosmic-greeter.service
+        dest: /etc/systemd/system/cosmic-greeter.service
+    - name: copy cosmic-greeter-daemon
+      ansible.builtin.copy:
+        src: ./cosmic-greeter-daemon.service
+        dest: /etc/systemd/system/cosmic-greeter-daemon.service
+    - name: Enable service greetd
+      ansible.builtin.systemd_service:
+        name: greetd
+        enabled: true
+    - name: Enable service cosmic-greeter
+      ansible.builtin.systemd_service:
+        name: cosmic-greeter
+        enabled: true
+    - name: Enable service cosmic-greeter-daemon
+      ansible.builtin.systemd_service:
+        name: cosmic-greeter-daemon
+        enabled: true
+    - name: Enable service networkmanager
+      ansible.builtin.systemd_service:
+        name: NetworkManager
+        enabled: true
