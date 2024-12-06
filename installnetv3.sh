@@ -3194,14 +3194,14 @@ apt-install wget curl git python3; \
 sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
-in-target mkdir -p /home/debian/.ssh; \
-cp /cdrom/* /target/home/debian/; \
-in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/debian/.ssh/authorized_keys"; \
-in-target /bin/sh -c "echo 'debian ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
+in-target mkdir -p /home/brauni/.ssh; \
+cp /cdrom/* /target/home/brauni/; \
+in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/brauni/.ssh/authorized_keys"; \
+in-target /bin/sh -c "echo 'brauni ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
 in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
-in-target chown -R debian /home/debian/.ssh/; \
-in-target chmod 644 /home/debian/.ssh/authorized_keys; \
-in-target chmod 700 /home/debian/.ssh/; \
+in-target chown -R brauni /home/brauni/.ssh/; \
+in-target chmod 644 /home/brauni/.ssh/authorized_keys; \
+in-target chmod 700 /home/brauni/.ssh/; \
 cp /saved/hosts /target/etc/hosts; \
 echo '@reboot root cat /etc/run.sh 2>/dev/null |base64 -d >/tmp/run.sh; rm -rf /etc/run.sh; sed -i /^@reboot/d /etc/crontab; bash /tmp/run.sh' >>/target/etc/crontab; \
 echo '' >>/target/etc/crontab; \
