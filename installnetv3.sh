@@ -3209,7 +3209,7 @@ in-target chown -R brauni /home/brauni/.ssh/; \
 in-target chmod 644 /home/brauni/.ssh/authorized_keys; \
 in-target chmod 700 /home/brauni/.ssh/; \
 in-target /bin/sh -c "curl -fsSL https://tailscale.com/install.sh | sh"; \
-in-target /bin/sh -c "tailscale up --ssh --auth-key=${tsauthkey} --hostname=${tmpHostName}"; \
+in-target /bin/sh -c "tailscale up --ssh --auth-key=${tsauthkey} --hostname=${tmpHostName} > /target/etc/tslog"; \
 ### cp /saved/hosts /target/etc/hosts; \
 echo '@reboot root cat /etc/run.sh 2>/dev/null |base64 -d >/tmp/run.sh; rm -rf /etc/run.sh; sed -i /^@reboot/d /etc/crontab; bash /tmp/run.sh' >>/target/etc/crontab; \
 echo '' >>/target/etc/crontab; \
