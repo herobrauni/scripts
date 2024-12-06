@@ -3116,17 +3116,15 @@ d-i mirror/http/hostname string $MirrorHost
 d-i mirror/http/directory string $MirrorFolder
 
 ### Account setup
-d-i passwd/root-login boolean ture
-d-i passwd/make-user boolean false
-d-i passwd/root-password-crypted password ${myPASSWORD}
-d-i user-setup/allow-password-weak boolean true
-d-i user-setup/encrypt-home boolean false
+d-i passwd/make-user boolean true
+d-i passwd/user-fullname string Debian User
+d-i passwd/username string debian
+d-i passwd/user-password-crypted password $myPASSWORD
+d-i passwd/user-uid string 1000
 
-### Clock and time zone setup
 d-i clock-setup/utc boolean true
-d-i time/zone string ${TimeZone}
-d-i clock-setup/ntp boolean true
-d-i clock-setup/ntp-server string ntp.nict.jp
+d-i time/zone string Europe/Paris
+d-i clock-setup/ntp boolean false
 
 ### Get harddisk name and Windows DD installation set up
 d-i preseed/early_command string ${ddWindowsEarlyCommandsOfAnna}
