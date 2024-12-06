@@ -3190,15 +3190,16 @@ d-i debian-installer/exit/reboot boolean true
 
 ### Write preseed
 d-i preseed/late_command string	\
-apt-install wget curl git python3; \
+apt-install wget curl git python3 sudo; \
 sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PasswordAuthentication.*/PasswordAuthentication no/g' /target/etc/ssh/sshd_config; \
 in-target mkdir -p /home/brauni/.ssh; \
 cp /cdrom/* /target/home/brauni/; \
 in-target /bin/sh -c "curl https://github.com/herobrauni.keys >> /home/brauni/.ssh/authorized_keys"; \
+in-target /bin/sh -c "mkdir -p /etc/sudoers.d"; \
 in-target /bin/sh -c "echo 'brauni ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers.d/90-cloud-init-users"; \
-in-target /bin/sh -c "echo '${hostnamevar}' > /etc/hostname"; \
+in-target /bin/sh -c "echo '${tmpHostName}' > /etc/hostname"; \
 in-target chown -R brauni /home/brauni/.ssh/; \
 in-target chmod 644 /home/brauni/.ssh/authorized_keys; \
 in-target chmod 700 /home/brauni/.ssh/; \
