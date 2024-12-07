@@ -3209,7 +3209,14 @@ in-target chown -R brauni /home/brauni/.ssh/; \
 in-target chmod 644 /home/brauni/.ssh/authorized_keys; \
 in-target chmod 700 /home/brauni/.ssh/; \
 in-target /bin/sh -c "curl -fsSL https://tailscale.com/install.sh | sh"; \
-in-target /bin/sh -c "tailscale up --ssh --auth-key=${tsauthkey} --hostname=${tmpHostName} > /target/etc/tslog"; \
+echo '[Unit]' > /target/etc/systemd/system/ts-up.service \
+echo 'After=network.target' >> /target/etc/systemd/system/ts-up.service \
+echo '[Service]' >> /target/etc/systemd/system/ts-up.service \
+echo 'ExecStart=tailscale up --ssh --auth-key=${tsauthkey}' >> /target/etc/systemd/system/ts-up.service \
+echo 'Type=oneshot' >> /target/etc/systemd/system/ts-up.service \
+echo '[Install]' >> /target/etc/systemd/system/ts-up.service \
+echo 'WantedBy=multi-user.target' >> /target/etc/systemd/system/ts-up.service \
+in-target /bin/sh -c "systemctl enable ts-up" \
 echo '@reboot root cat /etc/run.sh 2>/dev/null |base64 -d >/tmp/run.sh; rm -rf /etc/run.sh; sed -i /^@reboot/d /etc/crontab; bash /tmp/run.sh' >>/target/etc/crontab; \
 echo '' >>/target/etc/crontab; \
 echo '${setCMD}' >/target/etc/run.sh; \
