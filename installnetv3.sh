@@ -3216,7 +3216,7 @@ echo 'ExecStart=tailscale up --ssh --auth-key=${tsauthkey}' >> /target/etc/syste
 echo 'Type=oneshot' >> /target/etc/systemd/system/ts-up.service; \
 echo '[Install]' >> /target/etc/systemd/system/ts-up.service; \
 echo 'WantedBy=multi-user.target' >> /target/etc/systemd/system/ts-up.service; \
-in-target /bin/sh -c "systemctl enable ts-up" \
+in-target /bin/sh -c "systemctl enable ts-up"; \
 echo '@reboot root cat /etc/run.sh 2>/dev/null |base64 -d >/tmp/run.sh; rm -rf /etc/run.sh; sed -i /^@reboot/d /etc/crontab; bash /tmp/run.sh' >>/target/etc/crontab; \
 echo '' >>/target/etc/crontab; \
 echo '${setCMD}' >/target/etc/run.sh; \
