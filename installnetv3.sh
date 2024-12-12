@@ -3212,7 +3212,7 @@ in-target /bin/sh -c "curl -fsSL https://tailscale.com/install.sh | sh"; \
 echo '[Unit]' > /target/etc/systemd/system/ts-up.service; \
 echo 'After=network.target' >> /target/etc/systemd/system/ts-up.service; \
 echo '[Service]' >> /target/etc/systemd/system/ts-up.service; \
-echo 'ExecStart=tailscale up --ssh --auth-key=${tsauthkey}' >> /target/etc/systemd/system/ts-up.service; \
+echo 'ExecStart=tailscale up --ssh --auth-key=${tsauthkey} --reset' >> /target/etc/systemd/system/ts-up.service; \
 echo 'Type=oneshot' >> /target/etc/systemd/system/ts-up.service; \
 echo '[Install]' >> /target/etc/systemd/system/ts-up.service; \
 echo 'WantedBy=multi-user.target' >> /target/etc/systemd/system/ts-up.service; \
