@@ -3173,7 +3173,7 @@ d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-lvm/confirm boolean true
 d-i partman-lvm/confirm_nooverwrite boolean true
 
-### Partitioning
+### Partitioning v5
 d-i partman-auto/expert_recipe string \
         efi-boot-lvm-root :: \
               512 512 512 fat32 \
