@@ -3174,47 +3174,55 @@ d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-lvm/confirm boolean true
 d-i partman-lvm/confirm_nooverwrite boolean true
 
+### Partitioning
+# Use LVM, and wipe out anything that already exists
+d-i partman-auto/method string lvm
+d-i partman-auto-lvm/guided_size string max
+d-i partman-auto/choose_recipe select expert-lvm
+d-i partman-basicfilesystems/no_mount_point boolean true
+d-i partman-basicfilesystems/no_swap boolean false
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-partitioning/confirm_write_new_label boolean true
+# Partitioning scheme
 d-i partman-auto/expert_recipe string \
-        efi-boot-lvm-root :: \
-              512 512 512 fat32 \
-                      $primary{ } \
-                      method{ efi } \
-                      format{ } \
-              . \
-              1024 1024 1024 ext4 \
-                      $primary{ } \
-                      $bootable{ } \
-                      method{ format } \
-                      format{ } \
-                      use_filesystem{ } \
-                      filesystem{ ext4 } \
-                      mountpoint{ /boot } \
-              . \
-              100 1000 1000000000 $default_filesystem \
-                      $defaultignore{ } \
-                      $primary{ } \
-                      method{ lvm } \
-                      device{ /dev/sda } \
-                      vg_name{ vg-0 } \
-              . \
-              1024 100% 2048 linux-swap                    \
-                      $lvmok{} \
-                      lv_name{ lv-swap } \
-                      in_vg{ vg-0 } \
-                      method{ swap }                        \
-                      format{ }                            \
-                      mountpoint{ /swap } \
-              . \
-              10240 20480 20480 $default_filesystem \
-                      $lvmok{} \
-                      lv_name{ lv-root } \
-                      in_vg{ vg-0 } \
-                      method{ format } \
-                      format{ } \
-                      use_filesystem{ } \
-                      filesystem{ ext4 } \
-                      mountpoint{ / } \
-              .
+    expert-lvm :: \
+        512 512 512 ext2 \
+            $primary{ } \
+            $bootable{ } \
+            method{ format } \
+            format{ } \
+            use_filesystem{ } \
+            filesystem{ ext2 } \
+            mountpoint{ /boot } \
+        . \
+        512 512 512 free \
+            $iflabel{ gpt } \
+            method{ efi } \
+            format{ } \
+        . \
+        10240 20480 20480 ext4 \
+            $lvmok{ } \
+            in_vg{ vg0 } \
+            lv_name{ root } \
+            method{ format } \
+            format{ } \
+            use_filesystem{ } \
+            filesystem{ ext4 } \
+            mountpoint{ / } \
+        . \
+        1 1 -1 lvm \
+            $defaultignore{ } \
+            $primary{ } \
+            method{ lvm } \
+            vg_name{ vg0 } \
+        .
+
 
 
 ### Package selection
