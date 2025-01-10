@@ -3148,13 +3148,13 @@ d-i partman-auto-lvm/new_vg_name string system
 d-i partman-auto/expert_recipe string \
     boot-root :: \
     512 512 512 ext2 \
-        $primary{ } $bootable{ } \
+        \$primary{ } \$bootable{ } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext2 } \
         mountpoint{ /boot } \
     . \
     10000 100000 100000 ext4 \
-        $lvmok{ } \
+        \$lvmok{ } \
         lv_name{ root } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
