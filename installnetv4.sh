@@ -3173,7 +3173,7 @@ d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-lvm/confirm boolean true
 d-i partman-lvm/confirm_nooverwrite boolean true
 
-### Partitioning v5
+### Partitioning v6
 d-i partman-auto/expert_recipe string \
         efi-boot-lvm-root :: \
               512 512 512 fat32 \
@@ -3194,7 +3194,7 @@ d-i partman-auto/expert_recipe string \
                       $defaultignore{ } \
                       $primary{ } \
                       method{ lvm } \
-                      device{ /dev/sda } \
+                      device{ ${IncDisk} } \
                       vg_name{ vg-0 } \
               . \
               1024 3072 -1 $default_filesystem \
@@ -3204,7 +3204,7 @@ d-i partman-auto/expert_recipe string \
                       method{ format } \
                       format{ } \
                       use_filesystem{ } \
-                      filesystem{ ext4 } \
+                      filesystem{ $default_filesystem } \
                       mountpoint{ / } \
               .
 
