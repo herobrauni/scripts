@@ -3141,10 +3141,15 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning v8
+### Partitioning v9
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+
 d-i partman-auto/method string lvm
 d-i partman-auto/disk string ${IncDisk}
-d-i partman-auto-lvm/new_vg_name string system
+d-i partman-auto-lvm/new_vg_name string vg0
 d-i partman-auto/expert_recipe string \
     boot-root :: \
     512 512 512 ext2 \
@@ -3153,16 +3158,21 @@ d-i partman-auto/expert_recipe string \
         use_filesystem{ } filesystem{ ext2 } \
         mountpoint{ /boot } \
     . \
-    10000 100000 100000 ext4 \
+    1024 100% 2048 linux-swap \
+        method{ swap } format{ } \
+    . \
+    10240 20480 20480 ext4 \
         \$lvmok{ } \
         lv_name{ root } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
         mountpoint{ / } \
-    . \
-    1024 100% 2048 linux-swap \
-        method{ swap } format{ } \
     .
+
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
 
 
 ### Package selection
