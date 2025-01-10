@@ -3178,6 +3178,7 @@ d-i partman-lvm/confirm_nooverwrite boolean true
 # Use LVM, and wipe out anything that already exists
 d-i partman-auto/method string lvm
 d-i partman-auto-lvm/guided_size string max
+d-i partman-auto/disk string ${IncDisk}
 d-i partman-auto/choose_recipe select expert-lvm
 d-i partman-basicfilesystems/no_mount_point boolean true
 d-i partman-basicfilesystems/no_swap boolean false
@@ -3220,6 +3221,7 @@ d-i partman-auto/expert_recipe string \
             $defaultignore{ } \
             $primary{ } \
             method{ lvm } \
+            device ${IncDisk} \
             vg_name{ vg0 } \
         .
 
