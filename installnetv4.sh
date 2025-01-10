@@ -3139,74 +3139,30 @@ d-i time/zone string ${TimeZone}
 d-i clock-setup/ntp boolean true
 d-i clock-setup/ntp-server string ntp.nict.jp
 
-### Get harddisk name and Windows DD installation set up
-d-i preseed/early_command string ${ddWindowsEarlyCommandsOfAnna}
-d-i partman/early_command string \
-lvremove --select all -ff -y; \
-vgremove --select all -ff -y; \
-pvremove /dev/* -ff -y; \
-[[ -n "\$(blkid -t TYPE='vfat' -o device)" ]] && umount "\$(blkid -t TYPE='vfat' -o device)"; \
-${PartmanEarlyCommand} \
-wget -qO- '$DDURL' | $DEC_CMD | /bin/dd of=\$(list-devices disk | grep ${IncDisk} | head -n 1); \
-/bin/ntfs-3g \$(list-devices partition | grep ${IncDisk} | head -n 1) /mnt; \
-cd '/mnt/ProgramData/Microsoft/Windows/Start Menu/Programs'; \
-cd Start* || cd start*; \
-cp -f '/net.bat' './net.bat'; \
-/sbin/reboot; \
-umount /media || true; \
 
-### Partitioning
-d-i partman-lvm/device_remove_lvm boolean true
-d-i partman-lvm/device_remove_lvm_span boolean true
-d-i partman-lvm/confirm boolean true
-d-i partman-lvm/confirm_nooverwrite boolean true
-d-i partman-partitioning/confirm_write_new_label boolean true
-d-i partman/choose_partition select finish
-d-i partman/confirm boolean true
-d-i partman/confirm_nooverwrite boolean true
-${defaultFileSystem}
-d-i partman/mount_style select uuid
-d-i partman-md/device_remove_md boolean true
 
+### Partitioning v7
 d-i partman-auto/method string lvm
-d-i partman-lvm/device_remove_lvm boolean true
-d-i partman-lvm/confirm boolean true
-d-i partman-lvm/confirm_nooverwrite boolean true
-
-### Partitioning v6
+d-i partman-auto/disk string /dev/sda
+d-i partman-auto-lvm/new_vg_name string system
 d-i partman-auto/expert_recipe string \
-        efi-boot-lvm-root :: \
-              512 512 512 fat32 \
-                      $primary{ } \
-                      method{ efi } \
-                      format{ } \
-              . \
-              1024 1024 1024 ext4 \
-                      $primary{ } \
-                      $bootable{ } \
-                      method{ format } \
-                      format{ } \
-                      use_filesystem{ } \
-                      filesystem{ ext4 } \
-                      mountpoint{ /boot } \
-              . \
-              100 1000 1000000000 $default_filesystem \
-                      $defaultignore{ } \
-                      $primary{ } \
-                      method{ lvm } \
-                      device{ ${IncDisk} } \
-                      vg_name{ vg-0 } \
-              . \
-              1024 3072 -1 $default_filesystem \
-                      $lvmok{} \
-                      lv_name{ lv-root } \
-                      in_vg{ vg-0 } \
-                      method{ format } \
-                      format{ } \
-                      use_filesystem{ } \
-                      filesystem{ $default_filesystem } \
-                      mountpoint{ / } \
-              .
+    boot-root :: \
+    128 50 128 ext2 \
+        $primary{ } $bootable{ } \
+        method{ format } format{ } \
+        use_filesystem{ } filesystem{ ext2 } \
+        mountpoint{ /boot } \
+    . \
+    10000 50 10000 ext4 \
+        $lvmok{ } \
+        lv_name{ root } \
+        method{ format } format{ } \
+        use_filesystem{ } filesystem{ ext4 } \
+        mountpoint{ / } \
+    . \
+    2048 90 2048 linux-swap \
+        method{ swap } format{ } \
+    .
 
 
 ### Package selection
