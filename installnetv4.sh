@@ -3170,7 +3170,7 @@ d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
-
+d-i partman-basicfilesystems/no_swap boolean false
 
 ### Package selection
 tasksel tasksel/first multiselect minimal
