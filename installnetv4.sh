@@ -3141,7 +3141,7 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning v7
+### Partitioning v8
 d-i partman-auto/method string lvm
 d-i partman-auto/disk string ${IncDisk}
 d-i partman-auto-lvm/new_vg_name string system
