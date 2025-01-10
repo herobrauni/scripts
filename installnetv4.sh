@@ -3143,24 +3143,24 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 ### Partitioning v7
 d-i partman-auto/method string lvm
-d-i partman-auto/disk string /dev/sda
+d-i partman-auto/disk string ${IncDisk}
 d-i partman-auto-lvm/new_vg_name string system
 d-i partman-auto/expert_recipe string \
     boot-root :: \
-    128 50 128 ext2 \
+    512 512 512 ext2 \
         $primary{ } $bootable{ } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext2 } \
         mountpoint{ /boot } \
     . \
-    10000 50 10000 ext4 \
+    10000 100000 100000 ext4 \
         $lvmok{ } \
         lv_name{ root } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
         mountpoint{ / } \
     . \
-    2048 90 2048 linux-swap \
+    1024 100% 2048 linux-swap \
         method{ swap } format{ } \
     .
 
