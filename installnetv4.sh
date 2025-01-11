@@ -3141,7 +3141,7 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning v10
+### Partitioning v11
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
