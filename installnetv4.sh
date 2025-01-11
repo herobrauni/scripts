@@ -3217,7 +3217,7 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning UEFI / BIOS v16
+### Partitioning UEFI / BIOS v17
 ${partman_config}
 
 
