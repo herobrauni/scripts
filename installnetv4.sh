@@ -3056,13 +3056,6 @@ d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
 d-i partman-basicfilesystems/no_swap boolean false")
 
-# if efisupport is enabled, use partman_config_UEFI, else use partman_config_BIOS
-if [[ "$EfiSupport" == "enabled" ]]; then
-	partman_config=$partman_config_UEFI
-else
-	partman_config=$partman_config_BIOS
-fi
-
 function DebianPreseedProcess() {
 	if [[ "$setAutoConfig" == "1" ]]; then
 		# Debian security mirror of Tsinghua University: https://mirrors.tuna.tsinghua.edu.cn/help/debian/
@@ -3354,6 +3347,13 @@ checkCN "$IPStackType" "www.youtube.com" "www.instagram.com" "www.wikipedia.org"
 checkEfi "/sys/firmware/efi/efivars/" "/sys/firmware/efi/vars/" "/sys/firmware/efi/runtime-map/" "/sys/firmware/efi/mok-variables/"
 
 checkVirt
+
+# if efisupport is enabled, use partman_config_UEFI, else use partman_config_BIOS
+if [[ "$EfiSupport" == "enabled" ]]; then
+	partman_config=$partman_config_UEFI
+else
+	partman_config=$partman_config_BIOS
+fi
 
 if [[ "$sshPORT" ]]; then
 	if [[ ! ${sshPORT} -ge "1" ]] || [[ ! ${sshPORT} -le "65535" ]] || [[ $(grep '^[[:digit:]]*$' <<<'${sshPORT}') ]]; then
