@@ -3160,7 +3160,7 @@ d-i partman-auto/expert_recipe string \
         mountpoint{ /boot } \
     . \
     10240 20480 20480 ext4 \
-		\$defaultignore{ } \
+        \$defaultignore{ } \
         \$lvmok{ } \
         lv_name{ root } \
         method{ format } format{ } \
