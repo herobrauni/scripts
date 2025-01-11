@@ -3141,7 +3141,7 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning v14
+### Partitioning v15
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
@@ -3158,7 +3158,7 @@ d-i partman-auto/expert_recipe string \
         use_filesystem{ } filesystem{ ext2 } \
         mountpoint{ /boot } \
     . \
-    10240 20480 20480 ext4 \
+    6240 20480 20480 ext4 \
         \$defaultignore{ } \
         \$lvmok{ } \
         lv_name{ root } \
