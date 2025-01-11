@@ -3141,7 +3141,7 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning v13
+### Partitioning v14
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
@@ -3178,7 +3178,6 @@ d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
 d-i partman-basicfilesystems/no_swap boolean false
 
-d-i preseed/late_command string lvremove -f /dev/vg0/lv_delete > /dev/null 2>&1
 
 ### Package selection
 tasksel tasksel/first multiselect minimal
@@ -3206,6 +3205,7 @@ d-i debian-installer/exit/reboot boolean true
 
 ### Write preseed
 d-i preseed/late_command string	\
+lvremove -f /dev/vg0/lv_delete; \
 apt-install wget curl git python3 sudo; \
 sed -ri 's/^#?Port.*/Port ${sshPORT}/g' /target/etc/ssh/sshd_config; \
 sed -ri 's/^#?PermitRootLogin.*/PermitRootLogin no/g' /target/etc/ssh/sshd_config; \
