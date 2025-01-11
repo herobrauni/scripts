@@ -3153,7 +3153,6 @@ d-i partman-auto-lvm/new_vg_name string vg0
 d-i partman-auto/expert_recipe string \
     boot-root :: \
     512 512 512 ext2 \
-        \$lvmignore{ } \
         \$primary{ } \$bootable{ } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext2 } \
