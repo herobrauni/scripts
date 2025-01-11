@@ -4931,5 +4931,9 @@ fi
 	fi
 }
 
-echo -ne "\n[${green}Finish${plain}] Input '${yellow}reboot${plain}' to continue the subsequential installation.\n"
+#echo -ne "\n[${green}Finish${plain}] Input '${yellow}reboot${plain}' to continue the subsequential installation.\n"
+echo "sleep for 10 then reboot"
+sleep 10
+reboot
+
 exit 1
