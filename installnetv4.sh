@@ -3141,7 +3141,7 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning v12
+### Partitioning v13
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
@@ -3165,6 +3165,11 @@ d-i partman-auto/expert_recipe string \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
         mountpoint{ / } \
+    . \
+    1024 1024 1024 ext4 \
+    \$defaultignore{ } \
+    \$lvmok{ } \
+    lv_name{ lv_delete } \
     .
 
 d-i partman-partitioning/confirm_write_new_label boolean true
@@ -3172,6 +3177,8 @@ d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
 d-i partman-basicfilesystems/no_swap boolean false
+
+d-i preseed/late_command string lvremove -f /dev/vg0/lv_delete > /dev/null 2>&1
 
 ### Package selection
 tasksel tasksel/first multiselect minimal
