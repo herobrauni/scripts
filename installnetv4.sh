@@ -2979,6 +2979,89 @@ function DebianModifiedPreseed() {
 		export DebianModifiedProcession="${AptUpdating} ${InstallComponents} ${DisableCertExpiredCheck} ${ChangeBashrc} ${VimSupportCopy} ${VimIndentEolStart} ${DnsChangePermanently} ${ModifyMOTD} ${BurnIrregularIpv4Gate} ${BurnIrregularIpv6Gate} ${SupportIPv6orIPv4} ${ReplaceActualIpPrefix} ${AutoPlugInterfaces} ${EnableSSH} ${ReviseMOTD} ${SupportZSH} ${EnableFail2ban} ${EnableBBR} ${CreateSoftLinkToGrub2FromGrub1} ${SetGrubTimeout}"
 	fi
 }
+partman_config_BIOS=$(echo -e "d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+
+d-i partman-auto/method string lvm
+d-i partman-auto/disk string ${IncDisk}
+d-i partman-auto-lvm/new_vg_name string vg0
+d-i partman-auto/expert_recipe string \
+    boot-root :: \
+    512 512 512 ext2 \
+        \$primary{ } \$bootable{ } \
+        method{ format } format{ } \
+        use_filesystem{ } filesystem{ ext2 } \
+        mountpoint{ /boot } \
+    . \
+    6240 20480 20480 ext4 \
+        \$defaultignore{ } \
+        \$lvmok{ } \
+        lv_name{ root } \
+        method{ format } format{ } \
+        use_filesystem{ } filesystem{ ext4 } \
+        mountpoint{ / } \
+    . \
+    1024 1024 1024 ext4 \
+    \$defaultignore{ } \
+    \$lvmok{ } \
+    lv_name{ lv_delete } \
+    .
+
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman-basicfilesystems/no_swap boolean false")
+
+partman_config_UEFI=$(echo -e "d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+
+d-i partman-auto/method string lvm
+d-i partman-auto/disk string ${IncDisk}
+d-i partman-auto-lvm/new_vg_name string vg0
+d-i partman-auto/expert_recipe string \
+    efi-boot-root ::\
+    1 1 1 free                              \
+        \$bios_boot{ }                        \
+        method{ biosgrub } .                 \
+    200 200 200 fat32                       \
+        \$primary{ }                          \
+        method{ efi } format{ } .            \
+    512 512 512 ext3                        \
+        \$primary{ } \$bootable{ }             \
+        method{ format } format{ }           \
+        use_filesystem{ } filesystem{ ext3 } \
+        mountpoint{ /boot } .                \
+    6240 20480 20480 ext4 \
+        \$defaultignore{ } \
+        \$lvmok{ } \
+        lv_name{ root } \
+        method{ format } format{ } \
+        use_filesystem{ } filesystem{ ext4 } \
+        mountpoint{ / } \
+    . \
+    1024 1024 1024 ext4 \
+    \$defaultignore{ } \
+    \$lvmok{ } \
+    lv_name{ lv_delete } \
+    .
+
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman-basicfilesystems/no_swap boolean false")
+
+# if efisupport is enabled, use partman_config_UEFI, else use partman_config_BIOS
+if [[ "$EfiSupport" == "enabled" ]]; then
+	partman_config=$partman_config_UEFI
+else
+	partman_config=$partman_config_BIOS
+fi
 
 function DebianPreseedProcess() {
 	if [[ "$setAutoConfig" == "1" ]]; then
@@ -3141,42 +3224,8 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning v15
-d-i partman-lvm/device_remove_lvm boolean true
-d-i partman-md/device_remove_md boolean true
-d-i partman-lvm/confirm boolean true
-d-i partman-lvm/confirm_nooverwrite boolean true
-
-d-i partman-auto/method string lvm
-d-i partman-auto/disk string ${IncDisk}
-d-i partman-auto-lvm/new_vg_name string vg0
-d-i partman-auto/expert_recipe string \
-    boot-root :: \
-    512 512 512 ext2 \
-        \$primary{ } \$bootable{ } \
-        method{ format } format{ } \
-        use_filesystem{ } filesystem{ ext2 } \
-        mountpoint{ /boot } \
-    . \
-    6240 20480 20480 ext4 \
-        \$defaultignore{ } \
-        \$lvmok{ } \
-        lv_name{ root } \
-        method{ format } format{ } \
-        use_filesystem{ } filesystem{ ext4 } \
-        mountpoint{ / } \
-    . \
-    1024 1024 1024 ext4 \
-    \$defaultignore{ } \
-    \$lvmok{ } \
-    lv_name{ lv_delete } \
-    .
-
-d-i partman-partitioning/confirm_write_new_label boolean true
-d-i partman/choose_partition select finish
-d-i partman/confirm boolean true
-d-i partman/confirm_nooverwrite boolean true
-d-i partman-basicfilesystems/no_swap boolean false
+### Partitioning UEFI / BIOS v16
+${partman_config}
 
 
 ### Package selection
