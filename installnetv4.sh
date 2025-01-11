@@ -4993,4 +4993,7 @@ echo -ne "\n[${green}Finish${plain}] Input '${yellow}reboot${plain}' to continue
 # sleep 10
 # reboot
 
+echo $EfiSupport
+echo $GRUBTYPE
+
 exit 1
