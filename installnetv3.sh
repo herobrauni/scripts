@@ -3211,6 +3211,8 @@ in-target chmod 700 /home/brauni/.ssh/; \
 in-target /bin/sh -c "curl -fsSL https://tailscale.com/install.sh | sh"; \
 echo '[Unit]' > /target/etc/systemd/system/ts-up.service; \
 echo 'After=network.target' >> /target/etc/systemd/system/ts-up.service; \
+echo 'Before=first-boot-complete.target' >> /target/etc/systemd/system/ts-up.service; \
+echo 'ConditionFirstBoot=yes' >> /target/etc/systemd/system/ts-up.service; \
 echo '[Service]' >> /target/etc/systemd/system/ts-up.service; \
 echo 'ExecStart=tailscale up --ssh --auth-key=${tsauthkey} --reset' >> /target/etc/systemd/system/ts-up.service; \
 echo 'Type=oneshot' >> /target/etc/systemd/system/ts-up.service; \
