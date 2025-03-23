@@ -464,7 +464,7 @@ function selectMirror() {
 	if [[ "$IsCN" == "cn" ]]; then
 		MirrorBackup=(["debian0"]="" ["debian1"]="http://mirrors.ustc.edu.cn/debian" ["debian2"]="http://mirror.nju.edu.cn/debian" ["debian3"]="https://mirrors.tuna.tsinghua.edu.cn/debian" ["debian4"]="https://mirrors.aliyun.com/debian-archive/debian" ["ubuntu0"]="" ["ubuntu1"]="https://mirrors.ustc.edu.cn/ubuntu" ["ubuntu2"]="http://mirrors.xjtu.edu.cn/ubuntu" ["kali0"]="" ["kali1"]="https://mirrors.tuna.tsinghua.edu.cn/kali" ["kali2"]="http://mirrors.zju.edu.cn/kali" ["alpinelinux0"]="" ["alpinelinux1"]="http://mirror.nju.edu.cn/alpine" ["alpinelinux2"]="http://mirrors.tuna.tsinghua.edu.cn/alpine" ["centos0"]="" ["centos1"]="https://mirrors.ustc.edu.cn/centos-stream" ["centos2"]="https://mirrors.bfsu.edu.cn/centos-stream" ["centos3"]="https://mirrors.tuna.tsinghua.edu.cn/centos" ["centos4"]="http://mirror.nju.edu.cn/centos-altarch" ["centos5"]="https://mirrors.tuna.tsinghua.edu.cn/centos-vault" ["fedora0"]="" ["fedora1"]="https://mirrors.tuna.tsinghua.edu.cn/fedora" ["fedora2"]="https://mirrors.bfsu.edu.cn/fedora" ["rockylinux0"]="" ["rockylinux1"]="http://mirror.nju.edu.cn/rocky" ["rockylinux2"]="http://mirrors.sdu.edu.cn/rocky" ["almalinux0"]="" ["almalinux1"]="https://mirror.sjtu.edu.cn/almalinux" ["almalinux2"]="http://mirrors.neusoft.edu.cn/almalinux")
 	else
-		MirrorBackup=(["debian0"]="" ["debian1"]="http://debian.netcologne.de/debian" ["debian2"]="http://mirrors.ocf.berkeley.edu/debian" ["debian3"]="http://ftp.yz.yamagata-u.ac.jp/pub/linux/debian" ["debian4"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["kali0"]="" ["kali1"]="https://mirrors.ocf.berkeley.edu/kali" ["kali2"]="http://ftp.yz.yamagata-u.ac.jp/pub/linux/kali" ["alpinelinux0"]="" ["alpinelinux1"]="http://dl-cdn.alpinelinux.org/alpine" ["alpinelinux2"]="https://mirrors.edge.kernel.org/alpine" ["centos0"]="" ["centos1"]="http://mirror.stream.centos.org" ["centos2"]="http://mirrors.ocf.berkeley.edu/centos-stream" ["centos3"]="http://mirror.centos.org/centos" ["centos4"]="http://mirror.centos.org/altarch" ["centos5"]="http://vault.centos.org" ["fedora0"]="" ["fedora1"]="http://mirrors.rit.edu/fedora/fedora/linux" ["fedora2"]="http://ftp.iij.ad.jp/pub/linux/Fedora/fedora/linux" ["rockylinux0"]="" ["rockylinux1"]="http://download.rockylinux.org/pub/rocky" ["rockylinux2"]="http://mirrors.iu13.net/rocky" ["almalinux0"]="" ["almalinux1"]="http://repo.almalinux.org/almalinux" ["almalinux2"]="http://ftp.iij.ad.jp/pub/linux/almalinux")
+		MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://mirrors.ocf.berkeley.edu/debian" ["debian3"]="http://ftp.yz.yamagata-u.ac.jp/pub/linux/debian" ["debian4"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["kali0"]="" ["kali1"]="https://mirrors.ocf.berkeley.edu/kali" ["kali2"]="http://ftp.yz.yamagata-u.ac.jp/pub/linux/kali" ["alpinelinux0"]="" ["alpinelinux1"]="http://dl-cdn.alpinelinux.org/alpine" ["alpinelinux2"]="https://mirrors.edge.kernel.org/alpine" ["centos0"]="" ["centos1"]="http://mirror.stream.centos.org" ["centos2"]="http://mirrors.ocf.berkeley.edu/centos-stream" ["centos3"]="http://mirror.centos.org/centos" ["centos4"]="http://mirror.centos.org/altarch" ["centos5"]="http://vault.centos.org" ["fedora0"]="" ["fedora1"]="http://mirrors.rit.edu/fedora/fedora/linux" ["fedora2"]="http://ftp.iij.ad.jp/pub/linux/Fedora/fedora/linux" ["rockylinux0"]="" ["rockylinux1"]="http://download.rockylinux.org/pub/rocky" ["rockylinux2"]="http://mirrors.iu13.net/rocky" ["almalinux0"]="" ["almalinux1"]="http://repo.almalinux.org/almalinux" ["almalinux2"]="http://ftp.iij.ad.jp/pub/linux/almalinux")
 	fi
 	echo "$New" | grep -q '^http://\|^https://\|^ftp://' && MirrorBackup[${Relese}0]="${New%*/}"
 	for mirror in $(echo "${!MirrorBackup[@]}" | sed 's/\ /\n/g' | sort -n | grep "^$Relese"); do
@@ -1361,8 +1361,8 @@ function checkSys() {
 		if [[ $(grep -i "debian" /root/apt_execute.log) ]] && [[ $(grep -i "err:[0-9]" /root/apt_execute.log) || $(grep -i "404  not found" /root/apt_execute.log) ]]; then
 			currentDebianMirror=$(sed -n '/^deb /'p /etc/apt/sources.list | head -n 1 | awk '{print $2}' | sed -e 's|^[^/]*//||' -e 's|/.*$||')
 			if [[ "$CurrentOSVer" -gt "9" ]]; then
-				# Replace invalid mirror of Debian to 'debian.netcologne.de' if current version has not been 'EOL'(End Of Life).
-				sed -ri "s/$currentDebianMirror/debian.netcologne.de/g" /etc/apt/sources.list
+				# Replace invalid mirror of Debian to 'deb.debian.org' if current version has not been 'EOL'(End Of Life).
+				sed -ri "s/$currentDebianMirror/deb.debian.org/g" /etc/apt/sources.list
 			else
 				# Replace invalid mirror of Debian to 'archive.debian.org' because it had been marked with 'EOL'.
 				sed -ri "s/$currentDebianMirror/archive.debian.org/g" /etc/apt/sources.list
@@ -3217,7 +3217,7 @@ d-i clock-setup/ntp-server string ntp.nict.jp
 
 
 
-### Partitioning UEFI / BIOS v17
+### Partitioning UEFI / BIOS v18
 ${partman_config}
 
 
@@ -3267,6 +3267,8 @@ echo 'After=network.target' >> /target/etc/systemd/system/ts-up.service; \
 echo '[Service]' >> /target/etc/systemd/system/ts-up.service; \
 echo 'ExecStart=tailscale up --ssh --auth-key=${tsauthkey} --reset' >> /target/etc/systemd/system/ts-up.service; \
 echo 'Type=oneshot' >> /target/etc/systemd/system/ts-up.service; \
+echo 'ExecStartPost=/usr/bin/touch /var/lib/tailscale-configured' >> /target/etc/systemd/system/ts-up.service; \
+
 echo '[Install]' >> /target/etc/systemd/system/ts-up.service; \
 echo 'WantedBy=multi-user.target' >> /target/etc/systemd/system/ts-up.service; \
 in-target /bin/sh -c "systemctl enable ts-up"; \
