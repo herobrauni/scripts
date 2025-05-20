@@ -2980,13 +2980,12 @@ function DebianModifiedPreseed() {
 	fi
 }
 partman_config_BIOS=$(echo -e "d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-auto/method string regular
+d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
 d-i partman-lvm/confirm_nooverwrite boolean true
-
-d-i partman-auto/method string lvm
 d-i partman-auto/disk string ${IncDisk}
-d-i partman-auto-lvm/new_vg_name string vg0
 d-i partman-auto/expert_recipe string \
     boot-root :: \
     512 512 512 ext2 \
@@ -2996,17 +2995,12 @@ d-i partman-auto/expert_recipe string \
         mountpoint{ /boot } \
     . \
     6240 20480 20480 ext4 \
-        \$defaultignore{ } \
-        \$lvmok{ } \
-        lv_name{ root } \
+        $primary{ } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
-        mountpoint{ / } \
-    . \
-    1024 1024 1024 ext4 \
-    \$defaultignore{ } \
-    \$lvmok{ } \
-    lv_name{ lv_delete } \
+        mountpoint{ / } \    . \
+    1024 1024 10000000 ext2 \
+        method { keep } \
     .
 
 d-i partman-partitioning/confirm_write_new_label boolean true
@@ -3016,13 +3010,12 @@ d-i partman/confirm_nooverwrite boolean true
 d-i partman-basicfilesystems/no_swap boolean false")
 
 partman_config_UEFI=$(echo -e "d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-auto/method string regular
+d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
 d-i partman-lvm/confirm_nooverwrite boolean true
-
-d-i partman-auto/method string lvm
 d-i partman-auto/disk string ${IncDisk}
-d-i partman-auto-lvm/new_vg_name string vg0
 d-i partman-auto/expert_recipe string \
     efi-boot-root ::\
     1 1 1 free                              \
@@ -3037,19 +3030,15 @@ d-i partman-auto/expert_recipe string \
         use_filesystem{ } filesystem{ ext3 } \
         mountpoint{ /boot } .                \
     6240 20480 20480 ext4 \
-        \$defaultignore{ } \
-        \$lvmok{ } \
-        lv_name{ root } \
+        $primary{ } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
-        mountpoint{ / } \
-    . \
-    1024 1024 1024 ext4 \
-    \$defaultignore{ } \
-    \$lvmok{ } \
-    lv_name{ lv_delete } \
+        mountpoint{ / } \    . \
+    1024 1024 10000000 ext2 \
+        method { keep } \
     .
 
+d-i partman-basicmethods/method_only boolean false
 d-i partman-partitioning/confirm_write_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
