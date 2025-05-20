@@ -2994,7 +2994,7 @@ d-i partman-auto/expert_recipe string \
         use_filesystem{ } filesystem{ ext2 } \
         mountpoint{ /boot } \
     . \
-    6240 20480 20480 ext4 \
+    6240 20480 25600 ext4 \
         $primary{ } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
@@ -3029,7 +3029,7 @@ d-i partman-auto/expert_recipe string \
         method{ format } format{ }           \
         use_filesystem{ } filesystem{ ext3 } \
         mountpoint{ /boot } .                \
-    6240 20480 20480 ext4 \
+    6240 20480 25600 ext4 \
         $primary{ } \
         method{ format } format{ } \
         use_filesystem{ } filesystem{ ext4 } \
